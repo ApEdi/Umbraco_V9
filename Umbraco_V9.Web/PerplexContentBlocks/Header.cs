@@ -182,24 +182,24 @@ namespace Umbraco_V9.Web.PerplexContentBlocks
             //    }
             //}
 
-            _presetRepository.Add(new ContentBlocksPreset
-            {
-                Id = new Guid("5c03b99b-cce3-4c41-8de5-0a3d1055aee1"),
-                Name = "Header",
-                Blocks = new[]
-                {
-                    new ContentBlockPreset
-                    {
-                        Id = new Guid("58f7a9ce-b4b7-4b43-a9b0-b25abd131bc8"),
-                        DefinitionId = new Guid("1c6e3935-fc13-426a-b522-87f4946567de"),
-                        LayoutId = new Guid("5722646d-2188-4a78-b74b-47446399d096"),
-                        Values =
-                        {
-                            ["title"] = "Preset Title value",
-                        },
-                    },
-                }
-            });
+            //_presetRepository.Add(new ContentBlocksPreset
+            //{
+            //    Id = new Guid("5c03b99b-cce3-4c41-8de5-0a3d1055aee1"),
+            //    Name = "Header",
+            //    Blocks = new[]
+            //    {
+            //        new ContentBlockPreset
+            //        {
+            //            Id = new Guid("58f7a9ce-b4b7-4b43-a9b0-b25abd131bc8"),
+            //            DefinitionId = new Guid("1c6e3935-fc13-426a-b522-87f4946567de"),
+            //            LayoutId = new Guid("5722646d-2188-4a78-b74b-47446399d096"),
+            //            Values =
+            //            {
+            //                ["title"] = "Preset Title value",
+            //            },
+            //        },
+            //    }
+            //});
         }
 
         private void CreateExampleBlock(string contentTypeAlias, Guid dataTypeKey)
