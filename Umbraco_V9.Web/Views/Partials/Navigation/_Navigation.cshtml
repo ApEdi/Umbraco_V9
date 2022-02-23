@@ -1,0 +1,90 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var site = Model.Root();
+    var selection = site.Children.Where(x => x.IsVisible()).ToArray();
+}
+<div class="container">
+    <div class="d-flex flex-wrap py-3">
+        <nav class="d-flex flex-wrap navbar navbar-expand-md navbar-light me-auto" role="navigation">
+ 		    <a class="navbar-brand" href="/">Umbraco V9</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                @if (selection.Length > 0)
+                {
+                    <ul class="nav navbar-nav ml-auto">
+                        @foreach (var item in selection)
+                        {
+                            var children2ndLevel = false;
+                            bool activeNavLevel1 = false;
+
+                            if ((Model == item) || (Model.Parent == item)) 
+                            {
+                                activeNavLevel1 = true;
+                            }
+
+                            foreach (var childPage in item.Children.Where(x => x.IsVisible()))
+                            {
+                                children2ndLevel = true;
+
+                                if((childPage.IsDocumentType("blogPost") == true) 
+                                || (childPage.IsDocumentType("teamMember") == true) 
+                                || (childPage.IsDocumentType("Blogkategorie") == true))
+                                {
+                                    children2ndLevel = false;
+                                }    
+                            }
+
+                            <li class="nav-item @(children2ndLevel ? "dropdown" : null) @(activeNavLevel1 ? "active" : null)">
+                                @if (children2ndLevel)
+                                {
+                                    <a class="nav-link dropdown-toggle" href="@item.Url()" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        @item.Name
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @foreach (var subpage in item.Children.Where(x => x.IsVisible()))
+                                        {
+                                            bool activeNavLevel2 = false;
+
+                                            if (Model == subpage)
+                                            {
+                                                activeNavLevel2 = true;
+                                            }
+                                        
+                                            <li>        
+                                                <a class="dropdown-item @(activeNavLevel2 ? "active" : null)" href="@item.Url()">@subpage.Name</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" href="@item.Url()">
+                                        @item.Name
+                                    </a>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-md navbar-light">
+            <ul class="nav">
+                @foreach (var (culture, infos) in Model.Cultures)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link link-dark px-1" href="@Model.Url(culture)">@Model.Value("title", culture)</a>
+                    </li>
+                }
+            </ul>
+                        
+        </nav>
+    </div>    
+</div>
+
+ @*<a class="nav-link link-dark" href="@Model.MediaUrl(culture)">@Model.Value("title", culture)</a>*@
+ @*<a class="nav-link link-dark px-1" href="@Model.Url(culture, UrlMode.Relative)">@culture.Replace("-ch", "").ToUpper()</a>*@

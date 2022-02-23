@@ -1,0 +1,53 @@
+﻿@using Umbraco_V9.Core.Controller
+@model Umbraco_V9.Core.ViewModel.ContactFormViewModel
+
+@if ((string)TempData["Success"] == "OK")
+{   <text>
+        <div class="container">
+            <div class="row">
+                <div class="col text-center p-5">
+                    <div>
+                        Vielen Dank für die Nachricht
+                    </div>
+                </div>
+            </div>
+        </div>
+    </text>
+    
+}
+else
+{
+    <div class="container">
+        
+            @using(Html.BeginUmbracoForm<ContactController>(nameof(ContactController.Submit)))
+            {
+                <div class="row g-3">
+                    <div class="col">
+                        <div class="mt-5 mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Name</label>
+                            <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replate="true"></span>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-lg", placeholder = "Name", maxlength = "80"})
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">E-Mail</label>
+                            <span class="field-validation-valid" data-valmsg-for="EmailAddress" data-valmsg-replate="true"></span>
+                            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control form-control-lg", placeholder = "Ihre EMail", maxlength = "80"})
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Betreff</label>
+                    <span class="field-validation-valid" data-valmsg-for="Subject" data-valmsg-replate="true"></span>
+                    @Html.TextBoxFor(m => m.Subject, new { @class = "form-control form-control-lg", placeholder = "Betreff", maxlength = "255"})
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Nachricht</label>
+                    <span class="field-validation-valid" data-valmsg-for="Comment" data-valmsg-replate="true"></span>
+                    @Html.TextAreaFor(m => m.Comment, new { @class = "form-control form-control-lg", placeholder = "Ihre Nachricht", maxlength = "500"})
+                </div>
+                <br/>
+                <input class="btn btn-danger" type="submit" name="Submit" value="Senden" />
+            }
+        
+    </div>
+}

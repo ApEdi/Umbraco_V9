@@ -1,0 +1,41 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Team>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models
+
+@{
+	Layout = "Master.cshtml";
+	
+	var selection = Model.Children().Where(x => x.IsVisible()).ToArray();
+}
+
+@if (selection != null)
+{
+	<div class="team">
+		<div class="container"> 
+			<div class="row text-center"> 
+				@foreach (var item in selection)
+				{
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+						@{
+							var picker = item.Value<MediaWithCrops>("teamImage");
+							if (picker != null)
+							{
+								<img class="rounded-circle" src="@picker.GetCropUrl(350, 250)" als="@picker.Value("alt")" />
+							}
+						}
+
+						<div class="team-member">
+							<h2>@item.Name</h2>
+							<p>
+								<span class="badge bg-info">@item.Value("function")</span><br />
+								@item.Value("phoneNumber")<br />
+								@item.Value("eMail")<br />
+							</p>
+						</div>
+					</div>				
+				}
+			</div>
+		</div>
+	</div>
+}

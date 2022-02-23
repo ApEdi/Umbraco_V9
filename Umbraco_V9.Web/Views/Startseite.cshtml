@@ -1,0 +1,13 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inject IContentBlockRenderer Renderer
+
+@{
+	Layout = "Master.cshtml";
+}
+@await Html.RenderContentBlocks(Model.ContentBlocks, Renderer)
+
+@Html.GetBlockListHtml(Model, "content")
+
+
+

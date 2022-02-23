@@ -1,0 +1,23 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+var globalNode = Model.Root().Siblings().FirstOrDefault(x => x.ContentType.Alias == "siteSettings");
+}
+
+<footer class="footer mt-auto py-3 bg-info text-white">
+    <div class="container">
+        <div class="row">
+			<div class="col-md-4">
+			    <h3>@globalNode.Value("firmenName")</h3>
+			    <p>
+					@globalNode.Value("strasseNr")<br>
+					@globalNode.Value("pLZOrt")
+				</p>
+				<p>
+					@globalNode.Value("eMail")<br />
+					@globalNode.Value("telefonNummer")<br />
+				</p>
+			</div>
+		</div><!-- /.row -->
+	</div><!-- /.container -->
+</footer>

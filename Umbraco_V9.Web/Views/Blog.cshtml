@@ -1,0 +1,47 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Blog>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models
+
+@{
+	Layout = "Master.cshtml";
+
+	var allPosts = Model.Children().Where(x => x.IsVisible()).ToArray();
+
+	var showMaxPost = 5;
+}
+
+@if (allPosts.Length > 0)
+{
+	<section id="Blog" class="container content">
+		<div class="row">
+			@foreach (var item in allPosts)
+			{
+				<div class="col-sm-6">
+					@{
+						var picker = item.Value<IEnumerable<MediaWithCrops>>("blogImage");
+						if (picker.Count() > 0)
+						{
+							<img src="@picker.First().GetCropUrl(540,360)" class="img-fluid"/>
+						}
+                    }
+					<div class="small">
+						@{var articleDate = item.Value<DateTime>("date").ToString("dd.MM.yyyy");}
+
+						 @if (articleDate != "01.01.0001")
+						{
+							@articleDate
+						}
+						else
+						{
+							@item.CreateDate.ToString("dd.MM.yyyy")
+						}
+						<h2 class="card-title">@item.Name()</h2>
+                        <p class="card-text">@item.Value("blogTeaser")</p>
+                        <a href="@item.Url()" class="btn btn-primary">Weiterlesen</a>
+					</div>
+				</div>
+			}
+		</div>
+	</section>
+}

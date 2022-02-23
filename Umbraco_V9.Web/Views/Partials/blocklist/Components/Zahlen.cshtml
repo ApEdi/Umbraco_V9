@@ -1,0 +1,41 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+@{
+    var content = (ContentModels.Zahlen)Model.Content;
+    var zahlen = content.ZahlenMitBezeichnung;
+}
+
+<section id="Zahlen" class="pt-4 pb-4">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-3">
+            @foreach (var zahl in zahlen)
+            {
+                var zahlContent = (ContentModels.Number)zahl.Content;
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <span class="h2">
+                                @zahlContent.Anzahl
+                            </span>
+                            <p>
+                                @zahlContent.Description
+                            </p>
+                        </div>
+                    </div>
+                </div>  
+            }
+        </div> 
+        <p id="odometer" class="odometer"></p>
+    </div>
+</section>
+
+@*<script>
+    setTimeout(function(){
+        var anzahl = @
+        odometer.innerHTML= @content.ZahlenMitBezeichnung.Anzahl
+    }, 1000)
+</script>*@
+
+
+

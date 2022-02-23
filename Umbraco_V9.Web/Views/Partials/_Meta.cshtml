@@ -1,0 +1,57 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+	var isHomepage = Model.Root().Id == Model.Id;
+	var globalNode = Model.Root().Siblings().FirstOrDefault(x => x.ContentType.Alias == "siteSettings");
+}
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	@{
+        var seitentitel = Model.Name;
+        bool metatitel = false;
+        string tabtitel = "";
+        
+        /*
+        Wenn der Metatitel ausgefüllt wird, wird er gesetzt. 
+        Ansonsten wird der Firmenname, welcher in den globalen Inhalten definiert wurde mit dem Seitentitel zusammengehängt.
+        */
+        if ((Model.Value("metaTitel") != "") && Model.Value("metaTitel") != null)
+        {
+            metatitel = true;
+        }
+        else
+        {
+            if (isHomepage)
+            {
+                tabtitel = globalNode.Value("firmenName").ToString();
+            }
+            else 
+            {
+                tabtitel = globalNode.Value("firmenName") + " - " + seitentitel;
+            }
+        }
+    }
+
+	    <title>@(metatitel ? Model.Value("metaTitel") : tabtitel)</title>
+
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <!-- Custom Libraries -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" />
+        
+       @* <!-- Odometr includes -->
+        <link rel="stylesheet" href="https://github.hubspot.com/odometer/themes/odometer-theme-car.css" />
+        <script src="https://github.hubspot.com/odometer/odometer.js"></script>*@
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/site.css" type="text/css">
+
+        <link rel="stylesheet" href="/css/odometer-theme-default.css" />
+        <script src="/js/odometer.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </head>

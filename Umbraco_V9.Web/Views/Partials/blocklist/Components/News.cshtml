@@ -1,0 +1,53 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models
+
+@{
+    var content = (ContentModels.News)Model.Content;
+
+    var blogNode = content.WichBlog;
+
+    var newSelection = blogNode.Children.Where(x => x.IsVisible()).ToArray();
+
+    //var selection = Umbraco.ContentAtRoot().FirstOrDefault()
+    //.ChildrenOfType("news")
+    //.Where(x => x.IsVisible()).ToArray();
+}
+
+@if (newSelection != null)
+{
+    <section id="Blog" class="pt-4 pb-4">
+         <div class="container">
+             <h2>Top News</h2>
+             <div class="row">
+                 @foreach (var post in newSelection)
+                {
+                    <div class="col-sm-6">
+                    @{
+                        var picker = post.Value<IEnumerable<MediaWithCrops>>("blogImage");
+                        if (picker.Count() > 0)
+                        {
+                            <img src="@picker.First().GetCropUrl(540,360)" class="img-fluid"/>
+                        }
+                    }
+                    <div class="small">
+                    @{var articleDate = post.Value<DateTime>("date").ToString("dd.MM.yyyy");}
+                            
+                    @if (articleDate != "01.01.0001")
+                    {
+                        @articleDate
+                    }
+                    else
+                    {
+                        @post.CreateDate.ToString("dd.MM.yyyy")
+                    }
+                    </div>
+                        <h2 class="card-title">@post.Name</h2>
+                        <p class="card-text">@post.Value("blogTeaser")</p>
+                        <a href="@post.Url()" class="btn btn-primary">Weiterlesen</a>
+                    </div><!-- /.card -->
+               }
+            </div>
+        </div>
+	</section>
+}

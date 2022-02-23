@@ -1,0 +1,26 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using System.Text.Json
+@using Newtonsoft.Json
+
+@{
+    var content = (ContentModels.FreierTextBilder)Model.Content;
+    var settings = (ContentModels.FreierTextBilder)Model.Settings;
+}
+
+@{
+    //var grid1 = JsonSerializer.Deserialize(content.Grid.ToString());
+    var grid1 = JsonConvert.DeserializeObject(content.Grid.ToString());
+
+
+    //if (content.HasValue("grid") && grid1.sections[0].rows.Length >= 1)
+
+    if (content.HasValue("grid"))
+    {
+        <section class="bg-light pt-4 pb-4">
+            <div class="container">
+                @Html.GetGridHtml(content, "grid", "Custom-Grid")
+            </div>    
+        </section>
+    }
+} 

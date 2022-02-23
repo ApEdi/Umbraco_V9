@@ -1,0 +1,24 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Web.Common.PublishedModels;
+
+@{
+	Layout = null;
+	var isHomepage = Model.Root().Id == Model.Id;
+	var globalNode = Model.Root().Siblings().FirstOrDefault(x => x.ContentType.Alias == "siteSettings");
+}
+<html lang="de">
+
+    @Html.Partial("_Meta")
+
+<body class="website @(isHomepage ? "home" : null)" >
+	<header>
+		@Html.Partial("Navigation/_Navigation")
+		@Html.Partial("_Header")
+	</header>
+	<main id="Main" role="main">
+            @RenderBody()
+    </main>    
+    @Html.Partial("_Footer")
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var isHomepage = Model.Root().Id == Model.Id;
+    var globalNode = Model.Root().Siblings().FirstOrDefault(x => x.ContentType.Alias == "siteSettings");
+}
+
+<div id="Slider">
+	<div id="bs-slider" class="carousel slide carousel-fade" data-ride="carousel" data-interval="6000"> 
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner" role="listbox">
+            @{
+                var firstImage = true; 
+                var picker = Model.Value<IEnumerable<MediaWithCrops>>("sliderbild");
+                if (picker != null) {
+                    foreach (var entry in picker)
+                    {
+                        <div class="carousel-item @(firstImage ? "active" : null)"><img class="img-fluid" src="@entry.GetCropUrl(2000, 400)" alt=""></div>
+                        firstImage = false;
+                    }
+                }    
+                //Fals kein Bild auf der Seite angegeben ist wird das Standardbild der globalen Inhalte genommen.
+                if (firstImage)
+                {
+                    var image = globalNode.Value<MediaWithCrops>("headerbild");
+                    if (image != null)
+                    {
+                        <img src="@image.GetCropUrl(2000, 400)" alt="@image.Value("alt")" />
+                    }
+                }
+            }
+		</div><!-- /.carousel-inner --> 
+	</div>
+	<div class="inner">
+		<div class="container">
+            <h1>@(isHomepage ? Model.Value("headertitel") : Model.Name)</h1>
+            <p class="d-none d-lg-block">@Model.Value("headertext")</p>
+		</div>
+	</div><!-- /.inner -->
+</div>

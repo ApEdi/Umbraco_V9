@@ -1,0 +1,53 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.BlogPost>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models
+
+
+@{
+	Layout = "Master.cshtml";
+
+	var imgUrl = Model.Value<IEnumerable<MediaWithCrops>>("blogImage");
+ 
+}
+
+<div class="container">
+	@*@Model.Blogtext*@
+	<div class="text-center">
+		<div class="row">
+			<div class="col">
+				<div class="meta mb-5">
+					<li class="list-unstyled list-inline-item">
+						Edvin Mujalo
+					</li>
+					<li class="list-unstyled list-inline-item">
+						@Model.Date.ToString("dd.MM.yyyy")
+					</li>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<p class="lead-in">
+					@Model.BlogTeaser
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<img src="@imgUrl.First().GetCropUrl(1080,400)" class="w-100" />
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				@Model.BlogText
+			</div>
+		</div>
+		<a href="@Model.Parent.Url()" class="btn btn-primary">Zurück zu Übersicht</a>
+
+	</div>
+	
+</div>

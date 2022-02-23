@@ -1,0 +1,17 @@
+﻿@inherits UmbracoViewPage<IContentBlockViewModel<HeaderBlock>>
+@{
+    var firstImage = true;
+}
+<div id="Slider">
+    <div id="bs-slider" class="carousel slide carousel-fade" data-ride="carousel" data-interval="6000">
+            <div class="carousel-inner" role="listbox">
+            <div class="carousel-item @(firstImage ? "active" : null)">
+                    <img class="img-fluid" src="@Model.Content.HeaderImage.GetCropUrl(2000, 400)" alt="">
+                    <div class="carousel-caption d-none d-md-block">
+                    <h5>@Model.Content.Title</h5>
+                    <p>@Model.Content.Text</p>
+                </div>
+            </div>
+            </div>
+    </div>
+</div>
