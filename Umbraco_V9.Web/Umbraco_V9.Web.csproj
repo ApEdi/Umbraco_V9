@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Our.Umbraco.TheDashboard" Version="9.0.0" />
         <PackageReference Include="Perplex.ContentBlocks" Version="2.1.2" />
         <PackageReference Include="Umbraco.Cms" Version="9.3.0" />
     </ItemGroup>

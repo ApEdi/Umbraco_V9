@@ -9,9 +9,9 @@
     <div class="d-flex flex-wrap py-3">
         <nav class="d-flex flex-wrap navbar navbar-expand-md navbar-light me-auto" role="navigation">
  		    <a class="navbar-brand" href="/">Umbraco V9</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button>        			
             <div class="collapse navbar-collapse" id="navbarToggler">
                 @if (selection.Length > 0)
                 {
@@ -32,7 +32,7 @@
 
                                 if((childPage.IsDocumentType("blogPost") == true) 
                                 || (childPage.IsDocumentType("teamMember") == true) 
-                                || (childPage.IsDocumentType("Blogkategorie") == true))
+                                || (childPage.IsDocumentType("blogCategorie") == true))
                                 {
                                     children2ndLevel = false;
                                 }    
@@ -72,7 +72,7 @@
                 }
             </div>
         </nav>
-        <nav class="navbar navbar-expand-md navbar-light">
+        @*<nav class="navbar navbar-expand-md navbar-light">
             <ul class="nav">
                 @foreach (var (culture, infos) in Model.Cultures)
                 {
@@ -82,7 +82,7 @@
                 }
             </ul>
                         
-        </nav>
+        </nav>*@
     </div>    
 </div>
 

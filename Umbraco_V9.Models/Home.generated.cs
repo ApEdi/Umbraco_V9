@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Home</summary>
 	[PublishedModel("home")]
-	public partial class Home : PublishedContentModel, IHeader
+	public partial class Home : PublishedContentModel, ISuchmaschinenoptimierung
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -66,19 +66,27 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Perplex.ContentBlocks.Rendering.IContentBlocks ContentBlocks => this.Value<global::Perplex.ContentBlocks.Rendering.IContentBlocks>(_publishedValueFallback, "contentBlocks");
 
 		///<summary>
-		/// Header Text
+		/// Meta Beschreibung: Allgemeine Beschreibung, enthält vorzugsweise «Schlagwörter».
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.3.0+eea02137ae0b709861b45ded11882279a990c421")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headerText")]
-		public virtual string HeaderText => global::Umbraco.Cms.Web.Common.PublishedModels.Header.GetHeaderText(this, _publishedValueFallback);
+		[ImplementPropertyType("metaDescription")]
+		public virtual string MetaDescription => global::Umbraco.Cms.Web.Common.PublishedModels.Suchmaschinenoptimierung.GetMetaDescription(this, _publishedValueFallback);
 
 		///<summary>
-		/// Slider Bild
+		/// Meta Tags
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.3.0+eea02137ae0b709861b45ded11882279a990c421")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sliderBild")]
-		public virtual global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.MediaWithCrops> SliderBild => global::Umbraco.Cms.Web.Common.PublishedModels.Header.GetSliderBild(this, _publishedValueFallback);
+		[ImplementPropertyType("metaTags")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> MetaTags => global::Umbraco.Cms.Web.Common.PublishedModels.Suchmaschinenoptimierung.GetMetaTags(this, _publishedValueFallback);
+
+		///<summary>
+		/// Meta Titel: Aussagekräftiger Titel mit Firmenname.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.3.0+eea02137ae0b709861b45ded11882279a990c421")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("metaTitle")]
+		public virtual string MetaTitle => global::Umbraco.Cms.Web.Common.PublishedModels.Suchmaschinenoptimierung.GetMetaTitle(this, _publishedValueFallback);
 	}
 }

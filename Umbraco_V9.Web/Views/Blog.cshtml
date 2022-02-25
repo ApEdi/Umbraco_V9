@@ -1,47 +1,143 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Blog>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @using Umbraco.Cms.Core.Models
 
 @{
 	Layout = "Master.cshtml";
+	
+	//Light Gallery
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.10.0/css/lightgallery.min.css" integrity="sha512-gk6oCFFexhboh5r/6fov3zqTCA2plJ+uIoUx941tQSFg6TNYahuvh1esZVV0kkK+i5Kl74jPmNJTTaHAovWIhw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.10.0/js/lightgallery.min.js" integrity="sha512-gDBgGPXSeC2hx1W3S1CfSHbAValtLI8OArTGf0UVX7Fwb9Ak7HUE3LK9UEZxKGYVrIe0CJUVZDk9B2dIPwJ6VQ==" crossorigin="anonymous"></script>
 
 	var allPosts = Model.Children().Where(x => x.IsVisible()).ToArray();
+	var filterPost = allPosts;
 
 	var showMaxPost = 5;
+	
+	//Seiten
+	var page = HttpContextAccessor.HttpContext.Request.Query["page"];
+	var pageInt = 1;
+
+	//Kategorien
+	var kategorien = Model.Parent.FirstChildOfType("BlogCategories").Children().Where(x => x.IsVisible());
+	var filter = HttpContextAccessor.HttpContext.Request.Query["categories"];
+	var filterInt = -1;
+
+	if (filter != "")
+	{
+	    filterInt = Convert.ToInt32(filter);
+	    var kategorie = kategorien.ElementAt(filterInt);
+	    
+        //Alle Blogbeiträge, bei welchen Kategorien zugewiesen sind. Bei diesen wird geprüft ob die gesuchte Kategorie in der Liste vorkommt. 
+        filterPost =    allPosts
+                                    .Where(y => y.HasValue("categories"))
+                                    .Where(z => z.Value<IEnumerable<IPublishedContent>>("categories").Contains(kategorie))
+                                    .ToArray();
+    }
+
+	if (showMaxPost > filterPost.Length)
+	{
+	    showMaxPost = filterPost.Length;
+	}
+
+     //Welche Beiträge auf welcher Seite angezeigt werden sollen:
+    int start = (pageInt-1) * showMaxPost;
+    int end = start + showMaxPost;
+    if (end > allPosts.Length)
+    {
+        end = allPosts.Length;
+    }
 }
 
 @if (allPosts.Length > 0)
 {
 	<section id="Blog" class="container content">
-		<div class="row">
-			@foreach (var item in allPosts)
-			{
-				<div class="col-sm-6">
-					@{
-						var picker = item.Value<IEnumerable<MediaWithCrops>>("blogImage");
-						if (picker.Count() > 0)
-						{
-							<img src="@picker.First().GetCropUrl(540,360)" class="img-fluid"/>
-						}
+		<div class="filter">
+                @{
+                    if (kategorien.Count() > 0)
+                    {
+                        <a class="btn btn-primary @(filter == "" ? "active" : null)" href="?">Alle</a>
                     }
-					<div class="small">
-						@{var articleDate = item.Value<DateTime>("date").ToString("dd.MM.yyyy");}
-
-						 @if (articleDate != "01.01.0001")
-						{
-							@articleDate
-						}
-						else
-						{
-							@item.CreateDate.ToString("dd.MM.yyyy")
-						}
-						<h2 class="card-title">@item.Name()</h2>
-                        <p class="card-text">@item.Value("blogTeaser")</p>
-                        <a href="@item.Url()" class="btn btn-primary">Weiterlesen</a>
-					</div>
-				</div>
-			}
+                
+                    var kategorieNr = 0;
+                    foreach (var link in kategorien)
+                    {
+                        <a class="btn btn-primary @(kategorieNr == filterInt ? "active" : null)" href="?kategorie=@kategorieNr">@link.Name</a>
+                        kategorieNr++;
+                    }
+                }
+                
+            </div>
+            <p>&nbsp;</p>
+		<div class="row">
+			@for (int i = start; i < end; i++)
+                {
+                    <div class="col-xl-4 col-lg-3 col-md-2">
+                        <div id="Post@(filterPost[i].Id)" >
+                        @{
+                            var bilder = filterPost[i].Value<IEnumerable<MediaWithCrops>>("blogImage");
+                            var hasValue = filterPost[i].HasValue("blogImage");
+                            int x = 0;
+                            foreach (var bild in bilder)
+                            {
+                                
+                                x++;
+                                if (x == 1) 
+                                {
+                                    <img class="img-fluid" src="@bild.GetCropUrl(480,290)" data-src="@bild.Url()">
+                                }
+                                else 
+                                {
+                                    <div data-src="@bild.Url()"></div>
+                                }
+                            }
+                        }
+                        </div>
+                        <div class="small">
+                            @{var articleDate = filterPost[i].Value<DateTime>("datum").ToString("dd.MM.yyyy");}
+                            
+                            @if (articleDate != "01.01.0001")
+                            {
+                                @articleDate
+                            }
+                            else
+                            {
+                                @filterPost[i].CreateDate.ToShortDateString()
+                            }
+                        </div>
+                        <h2 class="card-title">@filterPost[i].Name</h2>
+                        <p class="card-text">@filterPost[i].Value("blogTeaser")</p>
+                        <a class="btn btn-primary" href="@filterPost[i].Url()">Weiterlesen</a>
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function(event) {//wie document.ready, aber ohne JS-Script
+                            $('#Post@(filterPost[i].Id)').lightGallery({
+                                download: false,
+                            }); 
+                        }); 
+                    </script>
+                }
 		</div>
+         @{
+        	    var anzahlSeiten = Math.Ceiling(Convert.ToDouble(filterPost.Length) / showMaxPost);
+            }
+
+            @if (anzahlSeiten > 1)
+            {
+                <ul class="pagination justify-content-center">
+                    
+                    @for (int i = 1; i < anzahlSeiten+1; i++)
+                    {
+                        var filterLink = "";
+                        if (filter != "")
+                        {
+                            filterLink = "kategorie=" + filter + "&";
+                        }
+        			    <li class="page-item"><a class="page-link @(pageInt == i ? "active" : null)" href="?@(filter != "" ? filterLink : null)page=@i">@i</a></li>
+        		    }
+        		</ul>    
+        	}
 	</section>
 }
