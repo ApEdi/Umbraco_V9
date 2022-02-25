@@ -19,15 +19,15 @@ using Umbraco.Extensions;
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	// Mixin Content Type with alias "settings"
-	/// <summary>Settings</summary>
+	/// <summary>Einstellungen</summary>
 	public partial interface ISettings : IPublishedContent
 	{
-		/// <summary>Show Navigation</summary>
+		/// <summary>Anzeigen/verstecken</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.3.0+eea02137ae0b709861b45ded11882279a990c421")]
 		bool UmbracoNaviHide { get; }
 	}
 
-	/// <summary>Settings</summary>
+	/// <summary>Einstellungen</summary>
 	[PublishedModel("settings")]
 	public partial class Settings : PublishedContentModel, ISettings
 	{
@@ -59,13 +59,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Show Navigation
+		/// Anzeigen/verstecken
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.3.0+eea02137ae0b709861b45ded11882279a990c421")]
 		[ImplementPropertyType("umbracoNaviHide")]
 		public virtual bool UmbracoNaviHide => GetUmbracoNaviHide(this, _publishedValueFallback);
 
-		/// <summary>Static getter for Show Navigation</summary>
+		/// <summary>Static getter for Anzeigen/verstecken</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.3.0+eea02137ae0b709861b45ded11882279a990c421")]
 		public static bool GetUmbracoNaviHide(ISettings that, IPublishedValueFallback publishedValueFallback) => that.Value<bool>(publishedValueFallback, "umbracoNaviHide");
 	}
